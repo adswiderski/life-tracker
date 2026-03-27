@@ -8,7 +8,9 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/lifetracker"
+    DATABASE_URL: str = (
+        "postgresql+asyncpg://postgres:postgres@localhost:5432/lifetracker"
+    )
 
     SECRET_KEY: str = "change-me-in-production"
     ALGORITHM: str = "HS256"
