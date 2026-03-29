@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, date as date_, UTC
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -9,27 +9,25 @@ class FitnessLog(Base):
     __tablename__ = "fitness_logs"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    date: Mapped[datetime] = mapped_column(nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    date: Mapped[date_] = mapped_column()
 
-    weight: Mapped[float | None] = mapped_column(nullable=True)
+    weight: Mapped[float | None] = mapped_column()
 
-    gym_done: Mapped[int] = mapped_column(default=0)
-    steps: Mapped[int | None] = mapped_column(nullable=True)
-    cardio_minutes: Mapped[int | None] = mapped_column(nullable=True)
+    gym_done: Mapped[bool] = mapped_column()
+    steps: Mapped[int | None] = mapped_column()
+    cardio_minutes: Mapped[int | None] = mapped_column()
 
-    calories: Mapped[int | None] = mapped_column(nullable=True)
-    protein: Mapped[float | None] = mapped_column(nullable=True)
-    carbs: Mapped[float | None] = mapped_column(nullable=True)
-    fats: Mapped[float | None] = mapped_column(nullable=True)
-    salt: Mapped[float | None] = mapped_column(nullable=True)
+    calories: Mapped[int | None] = mapped_column()
+    protein: Mapped[float | None] = mapped_column()
+    carbs: Mapped[float | None] = mapped_column()
+    fats: Mapped[float | None] = mapped_column()
+    salt: Mapped[float | None] = mapped_column()
 
-    notes: Mapped[str | None] = mapped_column(nullable=True)
+    notes: Mapped[str | None] = mapped_column()
 
-    created_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc)
-    )
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(UTC))
     updated_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
     )
