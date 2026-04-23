@@ -11,12 +11,12 @@ from app.core.security import decode_access_token
 bearer_scheme = HTTPBearer()
 
 
-async def get_current_user_email(
+async def get_current_user_id(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(bearer_scheme)],
-) -> str:
+) -> int:
     try:
         return decode_access_token(credentials.credentials)
-    except jwt.InvalidTokenError:
+    except (jwt.InvalidTokenError, ValueError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
@@ -24,6 +24,5 @@ async def get_current_user_email(
         )
 
 
-# Type aliases for cleaner endpoint signatures
 DBSession = Annotated[AsyncSession, Depends(get_db)]
-CurrentUserEmail = Annotated[str, Depends(get_current_user_email)]
+CurrentUserId = Annotated[int, Depends(get_current_user_id)]

@@ -1,11 +1,12 @@
-from pydantic import BaseModel
-import datetime
+import datetime as dt
+
+from pydantic import BaseModel, ConfigDict
 
 
 class FitnessLogBase(BaseModel):
-    date: datetime.date
+    date: dt.date
     weight: float | None = None
-    gym_done: int = 0
+    gym_done: bool = False
     steps: int | None = None
     cardio_minutes: int | None = None
     calories: int | None = None
@@ -21,9 +22,9 @@ class FitnessLogCreate(FitnessLogBase):
 
 
 class FitnessLogUpdate(BaseModel):
-    date: datetime.date | None = None
+    date: dt.date | None = None
     weight: float | None = None
-    gym_done: int | None = None
+    gym_done: bool | None = None
     steps: int | None = None
     cardio_minutes: int | None = None
     calories: int | None = None
@@ -35,10 +36,9 @@ class FitnessLogUpdate(BaseModel):
 
 
 class FitnessLogResponse(FitnessLogBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     user_id: int
-    created_at: datetime.datetime
-    updated_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    created_at: dt.datetime
+    updated_at: dt.datetime

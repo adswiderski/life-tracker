@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.auth import router as auth_router
+from app.fitness.router import router as fitness_router
+from app.auth.router import router as auth_router
+from app.learning.router import router as learning_router
+
+from app.core.config import settings
 
 app = FastAPI(
     title="Life Tracker API",
@@ -17,7 +21,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router=auth_router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(
+    router=auth_router, prefix=f"{settings.API_V1_PREFIX}/auth", tags=["auth"]
+)
+app.include_router(
+    fitness_router, prefix=f"{settings.API_V1_PREFIX}/fitness", tags=["fitness"]
+)
+app.include_router(
+    learning_router, prefix=f"{settings.API_V1_PREFIX}/learning", tags=["learning"]
+)
+
 
 @app.get("/")
 def root():

@@ -4,9 +4,11 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from app.auth.models import User  # noqa: F401 — import all models so Alembic sees them
+from app.auth.models import User
+from app.fitness.models import FitnessLog
 from app.core.config import settings
 from app.core.database import Base
+from app.learning.models import LearningGoal, LearningLog
 
 config = context.config
 if config.config_file_name is not None:
